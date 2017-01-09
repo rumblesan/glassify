@@ -2,7 +2,6 @@
    Square Grid
 */
 
-import _ from 'underscore';
 import Victor from 'victor';
 
 import * as Section from '../Section';
@@ -33,22 +32,20 @@ const sections = (points, width, height) => {
   const sects = [];
   for (let x = 0; x < width; x += 1) {
     for (let y = 0; y < height; y += 1) {
-      const s1p1 = points[`${x}:${y}`];
-      const s1p2 = points[`${x + 1}:${y + 1}`];
-      const s1p3 = points[`${x}:${y + 1}`];
-      if (s1p1 && s1p2 && s1p3) {
-        sects.push(
-          Section.create([s1p1, s1p2, s1p3])
-        );
-      }
-      const s2p1 = points[`${x}:${y}`];
-      const s2p2 = points[`${x + 1}:${y + 1}`];
-      const s2p3 = points[`${x}:${y + 1}`];
-      if (s2p1 && s2p2 && s2p3) {
-        sects.push(
-          Section.create([s2p1, s2p2, s2p3])
-        );
-      }
+      sects.push(
+        Section.create([
+          points[`${x}:${y}`],
+          points[`${x + 1}:${y + 1}`],
+          points[`${x}:${y + 1}`]
+        ])
+      );
+      sects.push(
+        Section.create([
+          points[`${x}:${y}`],
+          points[`${x + 1}:${y}`],
+          points[`${x + 1}:${y + 1}`]
+        ])
+      );
     }
   }
   return sects;

@@ -13,9 +13,13 @@ import * as Canvas from './app/Canvas';
 const init = () => {
   const canvasEl = document.getElementById('canvas');
   const canvas = Canvas.create(window, canvasEl);
+  const grid = Grid.create(
+    100,
+    Math.round(canvas.width / 20),
+    Math.round(canvas.height / 20)
+  );
 
   Canvas.drawBackground(canvas, 'black');
-  const grid = Grid.create(100, Math.round(canvas.width / 20), Math.round(canvas.height / 20));
   _.chain(grid.gridSections)
     .map(Section.lines)
     .flatten(true)
