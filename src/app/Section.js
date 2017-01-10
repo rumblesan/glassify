@@ -6,11 +6,12 @@ import _ from 'underscore';
 
 export const create = (points) => {
   return {
-    points
+    points,
+    lines: lines(points)
   };
 };
 
-export const lines = ({points}) => {
+export const lines = (points) => {
   const numP = _.size(points);
   const ls = [];
   for (let i = 0; i < numP; i += 1) {
