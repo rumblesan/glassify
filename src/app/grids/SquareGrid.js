@@ -17,8 +17,8 @@ export const create = (size, width, height) => {
 
 const points = (size, width, height) => {
   const ps = {};
-  for (let x = 0; x < width; x += 1) {
-    for (let y = 0; y < height; y += 1) {
+  for (let x = 0; x <= width; x += 1) {
+    for (let y = 0; y <= height; y += 1) {
       ps[`${x}:${y}`] = {
         coords: {x, y},
         pos: Victor(x * size, y * size)
@@ -30,8 +30,8 @@ const points = (size, width, height) => {
 
 const sections = (points, width, height) => {
   const sects = [];
-  for (let x = 0; x < width; x += 1) {
-    for (let y = 0; y < height; y += 1) {
+  for (let x = 0; x <= (width - 1); x += 1) {
+    for (let y = 0; y <= (height - 1); y += 1) {
       sects.push(
         Section.create([
           points[`${x}:${y}`],
