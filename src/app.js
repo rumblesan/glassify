@@ -20,12 +20,10 @@ const init = () => {
   );
 
   Canvas.drawBackground(canvas, 'black');
-  _.chain(grid.gridSections)
-    .map(Section.lines)
-    .flatten(true)
-    .map(([start, end]) => {
-      Canvas.drawLine(canvas, start.pos, end.pos, 'white');
-    });
+  _.map(
+    grid.gridSections,
+    (section) => Canvas.drawSection(canvas, section)
+  );
 
 };
 

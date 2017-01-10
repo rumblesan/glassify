@@ -2,6 +2,8 @@
   Canvas Drawing
  */
 
+import _ from 'underscore';
+
 export const create = (window, canvasElement) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -34,4 +36,14 @@ export const drawBackground = (canvas, colour) => {
   canvas.context.fillStyle = colour;
   canvas.context.fillRect(0, 0, canvas.element.width, canvas.element.height);
   return canvas;
+};
+
+/**
+   Higher level drawing functions
+ */
+
+export const drawSection = (canvas, {lines}) => {
+  _.map(lines, ([start, end]) => {
+    drawLine(canvas, start.pos, end.pos, 'white');
+  });
 };
