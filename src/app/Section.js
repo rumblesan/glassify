@@ -5,6 +5,8 @@
 import _ from 'underscore';
 import Victor from 'victor';
 
+import {gaussianRand} from './Util';
+
 export const create = (points) => {
   return {
     points,
@@ -29,7 +31,7 @@ export const subdivide = (section, fractalise) => {
   for (let i = 0; i < numP; i += 1) {
     const xdiff = points[(i + 1) % numP].x - points[i].x;
     const ydiff = points[(i + 1) % numP].y - points[i].y;
-    const r = Math.random();
+    const r = gaussianRand();
     newPoints.push(Victor(points[i].x + (xdiff * r), points[i].y + (ydiff * r)));
   }
   const newSubsection = create(newPoints);
