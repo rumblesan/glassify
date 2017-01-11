@@ -22,17 +22,20 @@ export const lines = (points) => {
   return ls;
 };
 
-export const subdivide = (section) => {
+export const subdivide = (section, fractalise) => {
   const points = section.points;
   const numP = _.size(points);
   const newPoints = [];
   for (let i = 0; i < numP; i += 1) {
-    newPoints.push(Victor(
-      (points[i].x + points[(i + 1) % numP].x) / 2,
-      (points[i].y + points[(i + 1) % numP].y) / 2
-    ));
+    const xdiff = points[(i + 1) % numP].x - points[i].x;
+    const ydiff = points[(i + 1) % numP].y - points[i].y;
+    const r = Math.random();
+    newPoints.push(Victor(points[i].x + (xdiff * r), points[i].y + (ydiff * r)));
   }
   const newSubsection = create(newPoints);
+  if (Math.random() < fractalise) {
+    subdivide(newSubsection, fractalise - 0.2);
+  }
   section.subSections = [newSubsection];
   return section;
 };

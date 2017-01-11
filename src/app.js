@@ -18,11 +18,12 @@ const init = () => {
     Math.floor(canvas.width / 100) + 1,
     Math.floor(canvas.height / 100) + 1
   );
+  const fractalise = 0.7;
 
   Canvas.drawBackground(canvas, 'black');
 
   _.chain(Grid.sections(grid)).map(
-    Section.subdivide
+    (s) => Section.subdivide(s, fractalise)
   ).map(
     (section) => Canvas.drawSection(canvas, section)
   );
