@@ -13,10 +13,11 @@ import * as Canvas from './app/Canvas';
 const init = () => {
   const canvasEl = document.getElementById('canvas');
   const canvas = Canvas.create(window, canvasEl);
+  const dist = 50;
   const grid = Grid.create(
-    100,
-    Math.floor(canvas.width / 100) + 1,
-    Math.floor(canvas.height / 100) + 1
+    dist,
+    Math.floor(canvas.width / dist) + 2,
+    Math.floor(canvas.height / dist) + 2
   );
   const fractalise = 0.7;
 

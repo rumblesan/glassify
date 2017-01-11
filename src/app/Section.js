@@ -31,7 +31,8 @@ export const subdivide = (section, fractalise) => {
   for (let i = 0; i < numP; i += 1) {
     const xdiff = points[(i + 1) % numP].x - points[i].x;
     const ydiff = points[(i + 1) % numP].y - points[i].y;
-    const r = gaussianRand();
+    //const r = gaussianRand();
+    const r = 0.3;
     newPoints.push(Victor(points[i].x + (xdiff * r), points[i].y + (ydiff * r)));
   }
   const newSubsection = create(newPoints);
