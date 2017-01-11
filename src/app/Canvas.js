@@ -44,7 +44,7 @@ export const drawBackground = (canvas, colour) => {
 
 export const drawSection = (canvas, section) => {
   _.each(section.lines, ([start, end]) => {
-    drawLine(canvas, start.pos, end.pos, 'white');
+    drawLine(canvas, start, end, 'white');
   });
   _.each(section.subSections, (ss) => drawSection(canvas, ss));
 };
