@@ -42,8 +42,9 @@ export const drawBackground = (canvas, colour) => {
    Higher level drawing functions
  */
 
-export const drawSection = (canvas, {lines}) => {
-  _.map(lines, ([start, end]) => {
+export const drawSection = (canvas, section) => {
+  _.each(section.lines, ([start, end]) => {
     drawLine(canvas, start.pos, end.pos, 'white');
   });
+  _.each(section.subSections, (ss) => drawSection(canvas, ss));
 };

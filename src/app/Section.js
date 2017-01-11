@@ -7,7 +7,8 @@ import _ from 'underscore';
 export const create = (points) => {
   return {
     points,
-    lines: lines(points)
+    lines: lines(points),
+    subSections: []
   };
 };
 
