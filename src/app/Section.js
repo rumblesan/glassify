@@ -27,13 +27,10 @@ export const subdivide = (section) => {
   const numP = _.size(points);
   const newPoints = [];
   for (let i = 0; i < numP; i += 1) {
-    let newP = {
-      pos: Victor(
-        (points[i].x + points[(i + 1) % numP].x) / 2,
-        (points[i].y + points[(i + 1) % numP].y) / 2
-      )
-    };
-    newPoints.push(newP);
+    newPoints.push(Victor(
+      (points[i].x + points[(i + 1) % numP].x) / 2,
+      (points[i].y + points[(i + 1) % numP].y) / 2
+    ));
   }
   const newSubsection = create(newPoints);
   section.subSections = [newSubsection];
