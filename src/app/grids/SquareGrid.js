@@ -7,11 +7,9 @@ import Victor from 'victor';
 import * as Section from '../Section';
 
 export const create = (size, width, height) => {
-  const gridPoints = points(size, width, height);
-  const gridSections = sections(gridPoints, width, height);
   return {
-    gridPoints,
-    gridSections
+    width, height,
+    points: points(size, width, height)
   };
 };
 
@@ -25,7 +23,7 @@ const points = (size, width, height) => {
   return ps;
 };
 
-const sections = (points, width, height) => {
+export const sections = ({width, height, points}) => {
   const sects = [];
   const w = width + 1;
   for (let y = 0; y < height; y += 1) {

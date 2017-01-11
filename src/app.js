@@ -21,7 +21,7 @@ const init = () => {
 
   Canvas.drawBackground(canvas, 'black');
 
-  _.chain(grid.gridSections).map(
+  _.chain(Grid.sections(grid)).map(
     Section.subdivide
   ).map(
     (section) => Canvas.drawSection(canvas, section)
