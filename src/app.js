@@ -5,7 +5,7 @@ import './images/favicon.ico';
 
 import _ from 'underscore';
 
-import * as Grid from './app/grids/SquareGrid';
+import * as Grid from './app/grids/TriangleGrid';
 import * as Section from './app/Section';
 import * as Canvas from './app/Canvas';
 
