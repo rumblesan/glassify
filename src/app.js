@@ -20,8 +20,10 @@ const init = () => {
   );
 
   Canvas.drawBackground(canvas, 'black');
-  _.map(
-    grid.gridSections,
+
+  _.chain(grid.gridSections).map(
+    Section.subdivide
+  ).map(
     (section) => Canvas.drawSection(canvas, section)
   );
 

@@ -3,6 +3,7 @@
  */
 
 import _ from 'underscore';
+import Victor from 'victor';
 
 export const create = (points) => {
   return {
@@ -19,4 +20,22 @@ export const lines = (points) => {
     ls.push([points[i], points[(i + 1) % numP]]);
   }
   return ls;
+};
+
+export const subdivide = (section) => {
+  const points = section.points;
+  const numP = _.size(points);
+  const newPoints = [];
+  for (let i = 0; i < numP; i += 1) {
+    let newP = {
+      pos: Victor(
+        (points[i].pos.x + points[(i + 1) % numP].pos.x) / 2,
+        (points[i].pos.y + points[(i + 1) % numP].pos.y) / 2
+      )
+    };
+    newPoints.push(newP);
+  }
+  const newSubsection = create(newPoints);
+  section.subSections = [newSubsection];
+  return section;
 };
