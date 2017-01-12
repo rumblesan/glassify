@@ -13,7 +13,8 @@ export const create = (onLoad) => {
     canvas,
     context,
     onLoad,
-    data: null
+    data: null,
+    filter: null
   };
 };
 

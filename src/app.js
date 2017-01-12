@@ -3,49 +3,36 @@ import './index.html';
 import './style/style.css';
 import './images/favicon.ico';
 
-import _ from 'underscore';
-
 import * as ImageHandling from './app/ImageHandling';
-import * as Grid from './app/grids/TriangleGrid';
-import * as Section from './app/Section';
-import * as Canvas from './app/Canvas';
+import * as Filter from './app/Filter';
 
 const init = () => {
-  const canvasEl = document.getElementById('canvas');
+
+  const dropspaceEl = document.getElementById('dropspace');
 
   const image = ImageHandling.create((image) => {
+    image.filter = Filter.create();
     console.log(image);
+    var displayCanvas = document.createElement('canvas');
+    displayCanvas.id = 'display';
+    displayCanvas.width = image.canvas.width;
+    displayCanvas.height = image.canvas.height;
+    dropspaceEl.appendChild(displayCanvas);
+    const dcCtx = displayCanvas.getContext('2d');
+    dcCtx.putImageData(image.data, 0, 0);
   });
 
-  canvasEl.addEventListener('dragover', (event) => {
+  dropspaceEl.addEventListener('dragover', (event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
   });
 
-  canvasEl.addEventListener('drop', (event) => {
+  dropspaceEl.addEventListener('drop', (event) => {
     event.preventDefault();
     const files = event.dataTransfer.files;
     if (files.length < 1) return;
-    console.log(files[0]);
     ImageHandling.loadFile(image)(files[0]);
   });
-
-  const canvas = Canvas.create(window, canvasEl);
-  const dist = 50;
-  const grid = Grid.create(
-    dist,
-    Math.floor(canvas.width / dist) + 2,
-    Math.floor(canvas.height / dist) + 2
-  );
-  const fractalise = 0.7;
-
-  Canvas.drawBackground(canvas, 'black');
-
-  _.chain(Grid.sections(grid)).map(
-    (s) => Section.subdivide(s, fractalise)
-  ).map(
-    (section) => Canvas.drawSection(canvas, section)
-  );
 
 };
 
