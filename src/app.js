@@ -1,39 +1,59 @@
+/* global paper */
 
 import './index.html';
 import './style/style.css';
 import './images/favicon.ico';
+import './images/squid.jpg';
 
-import * as ImageHandling from './app/ImageHandling';
-import * as Filter from './app/Filter';
+const canvas = document.getElementById('triangles');
+paper.setup(canvas);
 
-const init = () => {
-
-  const dropspaceEl = document.getElementById('dropspace');
-
-  const image = ImageHandling.create((image) => {
-    image.filter = Filter.create();
-    console.log(image);
-    var displayCanvas = document.createElement('canvas');
-    displayCanvas.id = 'display';
-    displayCanvas.width = image.canvas.width;
-    displayCanvas.height = image.canvas.height;
-    dropspaceEl.appendChild(displayCanvas);
-    const dcCtx = displayCanvas.getContext('2d');
-    dcCtx.putImageData(image.data, 0, 0);
-  });
-
-  dropspaceEl.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
-  });
-
-  dropspaceEl.addEventListener('drop', (event) => {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-    if (files.length < 1) return;
-    ImageHandling.loadFile(image)(files[0]);
-  });
-
+const appState = {
+  raster: null
 };
 
-init();
+function handleImage(appState, image) {
+  // As the web is asynchronous, we need to wait for the raster to
+  // load before we can perform any operation on its pixels.
+  appState.raster = new paper.Raster(image);
+  appState.raster.visible = false;
+  appState.raster.on('load', function() {
+    // Transform the raster, so it fills the view:
+    console.log(image);
+    appState.raster.position = paper.view.center;
+    appState.raster.fitBounds(paper.view.bounds, true);
+  });
+}
+
+const onResize = (appState) => () => {
+  appState.raster.fitBounds(paper.view.bounds, true);
+  paper.project.activeLayer.position = paper.view.center;
+};
+paper.view.onResize = onResize(appState);
+
+function onDocumentDrag(event) {
+  event.preventDefault();
+}
+
+function onDocumentDrop(event) {
+  event.preventDefault();
+
+  var file = event.dataTransfer.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(event) {
+    var image = document.createElement('img');
+    image.onload = function () {
+      handleImage(appState, image);
+      paper.view.draw();
+    };
+    image.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener('drop', onDocumentDrop, false);
+document.addEventListener('dragover', onDocumentDrag, false);
+document.addEventListener('dragleave', onDocumentDrag, false);
+
+handleImage(appState, 'squid');
