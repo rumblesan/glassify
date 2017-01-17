@@ -1,44 +1,46 @@
+/* global paper */
 /**
    Sections
  */
-
-import _ from 'underscore';
-import Victor from 'victor';
 
 import {gaussianRand} from './Util';
 
 export const create = (points) => {
   return {
-    points,
-    lines: lines(points),
-    subSections: []
+    points
   };
 };
 
-export const lines = (points) => {
-  const numP = _.size(points);
-  const ls = [];
-  for (let i = 0; i < numP; i += 1) {
-    ls.push([points[i], points[(i + 1) % numP]]);
-  }
-  return ls;
+const midpoint = (p1, p2) => {
+  const xdiff = p2.x - p1.x;
+  const ydiff = p2.y - p1.y;
+  //const r = gaussianRand();
+  const r = 0.3;
+
+  return new paper.Point(p1.x + (xdiff * r), p1.y + (ydiff * r));
 };
 
-export const subdivide = (section, fractalise) => {
-  const points = section.points;
-  const numP = _.size(points);
-  const newPoints = [];
-  for (let i = 0; i < numP; i += 1) {
-    const xdiff = points[(i + 1) % numP].x - points[i].x;
-    const ydiff = points[(i + 1) % numP].y - points[i].y;
-    //const r = gaussianRand();
-    const r = 0.3;
-    newPoints.push(Victor(points[i].x + (xdiff * r), points[i].y + (ydiff * r)));
-  }
-  const newSubsection = create(newPoints);
-  if (Math.random() < fractalise) {
-    subdivide(newSubsection, fractalise - 0.2);
-  }
-  section.subSections = [newSubsection];
-  return section;
+export const subdivide = (section) => {
+  const [p1, p2, p3] = section.points;
+
+  const p12 = midpoint(p1, p2);
+  const p23 = midpoint(p2, p3);
+  const p31 = midpoint(p3, p1);
+
+  return [
+    create([p1, p12, p31]),
+    create([p2, p23, p12]),
+    create([p3, p31, p23]),
+    create([p12, p23, p31])
+  ];
+};
+
+export const path = (section) => {
+  const [p1, p2, p3] = section.points;
+  const path = new paper.Path();
+  path.add(p1);
+  path.add(p2);
+  path.add(p3);
+  path.closed = true;
+  return path;
 };

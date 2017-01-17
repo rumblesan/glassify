@@ -1,8 +1,8 @@
+/* global paper */
 /**
    Square Grid
 */
 
-import Victor from 'victor';
 
 import * as Section from '../Section';
 
@@ -17,7 +17,7 @@ const points = (size, width, height) => {
   const ps = [];
   for (let y = 0; y <= height; y += 1) {
     for (let x = 0; x <= width; x += 1) {
-      ps.push(Victor(x * size, y * size));
+      ps.push(new paper.Point(x * size, y * size));
     }
   }
   return ps;

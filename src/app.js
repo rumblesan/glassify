@@ -5,11 +5,19 @@ import './style/style.css';
 import './images/favicon.ico';
 import './images/squid.jpg';
 
+import _ from 'underscore';
+
+import * as Grid from './app/grids/TriangleGrid';
+import * as Section from './app/Section';
+
 const canvas = document.getElementById('triangles');
 paper.setup(canvas);
 
 const appState = {
-  raster: null
+  raster: null,
+  grid: null,
+  sections: null,
+  triangleSize: 60
 };
 
 function handleImage(appState, image) {
@@ -19,9 +27,28 @@ function handleImage(appState, image) {
   appState.raster.visible = false;
   appState.raster.on('load', function() {
     // Transform the raster, so it fills the view:
-    console.log(image);
     appState.raster.position = paper.view.center;
     appState.raster.fitBounds(paper.view.bounds, true);
+
+    const gridXCells = Math.ceil(paper.view.viewSize.width / appState.triangleSize);
+    const gridYCells = Math.ceil(paper.view.viewSize.height / appState.triangleSize);
+      //Math.ceil(paper.view.height / (Math.cos(Math.PI/6) * appState.triangleSize))
+    appState.grid = Grid.create(
+      appState.triangleSize,
+      gridXCells,
+      gridYCells
+    );
+    appState.sections = Grid.sections(appState.grid);
+    appState.sections = _.flatten(_.map(Grid.sections(appState.grid), Section.subdivide));
+
+    const tris = new paper.Group();
+    _.chain(appState.sections).map(Section.path).each((s) => {
+      const colour = appState.raster.getAverageColor(s);
+      tris.addChild(s);
+      s.fillColor = colour;
+      s.strokeColor = colour;
+    });
+
   });
 }
 
