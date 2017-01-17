@@ -7,7 +7,7 @@ import './images/squid.jpg';
 
 import _ from 'underscore';
 
-import * as Grid from './app/grids/TriangleGrid';
+import * as Grid from './app/Grid';
 import * as Section from './app/Section';
 
 const canvas = document.getElementById('triangles');
@@ -32,7 +32,6 @@ function handleImage(appState, image) {
 
     const gridXCells = Math.ceil(paper.view.viewSize.width / appState.triangleSize);
     const gridYCells = Math.ceil(paper.view.viewSize.height / appState.triangleSize);
-      //Math.ceil(paper.view.height / (Math.cos(Math.PI/6) * appState.triangleSize))
     appState.grid = Grid.create(
       appState.triangleSize,
       gridXCells,

@@ -4,7 +4,7 @@
 
 import Victor from 'victor';
 
-import * as Section from '../Section';
+import * as Section from './Section';
 
 export const create = (size, width, height) => {
   return {
