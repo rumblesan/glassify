@@ -1,8 +1,7 @@
+/* global paper */
 /**
    Triangle Grid
 */
-
-import Victor from 'victor';
 
 import * as Section from './Section';
 
@@ -19,7 +18,7 @@ const points = (size, width, height) => {
     for (let x = 0; x <= width; x += 1) {
       let xp = (x * size) - ((y % 2) * (size / 2));
       let yp = y * size;
-      ps.push(Victor(xp, yp));
+      ps.push(new paper.Point(xp, yp));
     }
   }
   return ps;
