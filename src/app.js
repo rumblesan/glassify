@@ -24,45 +24,49 @@ const appState = {
   triangleSize: 400
 };
 
+const crystalise = (appState) => {
+  appState.raster.position = paper.view.center;
+  // Transform the raster, so it fills the view:
+  appState.raster.fitBounds(paper.view.bounds, true);
+
+  const gridXCells = Math.ceil(paper.view.viewSize.width / appState.triangleSize) + 1;
+  const gridYCells = Math.ceil(paper.view.viewSize.height / appState.triangleSize) + 1;
+  appState.grid = Grid.create(
+    appState.triangleSize,
+    gridXCells,
+    gridYCells
+  );
+  appState.sections = _.chain(Grid.sections(appState.grid))
+    .flatMap(Section.subdivide)
+    .flatMap(Section.subdivide)
+    .flatMap(Section.subdivide)
+    .flatMap(Section.subdivide);
+
+  const tris = new paper.Group();
+  _.chain(appState.sections).map(Section.path).each((s) => {
+    const colour = appState.raster.getAverageColor(s);
+    tris.addChild(s);
+    s.fillColor = colour;
+    s.strokeColor = colour;
+  });
+
+};
+
 function handleImage(appState, image) {
   // As the web is asynchronous, we need to wait for the raster to
   // load before we can perform any operation on its pixels.
   appState.raster = new paper.Raster(image);
   appState.raster.visible = false;
+
   appState.raster.on('load', function() {
-    // Transform the raster, so it fills the view:
-    appState.raster.position = paper.view.center;
-    appState.raster.fitBounds(paper.view.bounds, true);
-
-    const gridXCells = Math.ceil(paper.view.viewSize.width / appState.triangleSize);
-    const gridYCells = Math.ceil(paper.view.viewSize.height / appState.triangleSize);
-    appState.grid = Grid.create(
-      appState.triangleSize,
-      gridXCells,
-      gridYCells
-    );
-    appState.sections = _.chain(Grid.sections(appState.grid))
-      .flatMap(Section.subdivide)
-      .flatMap(Section.subdivide)
-      .flatMap(Section.subdivide)
-      .flatMap(Section.subdivide);
-
-    const tris = new paper.Group();
-    _.chain(appState.sections).map(Section.path).each((s) => {
-      const colour = appState.raster.getAverageColor(s);
-      tris.addChild(s);
-      s.fillColor = colour;
-      s.strokeColor = colour;
-    });
-
+    crystalise(appState);
   });
 }
 
-const onResize = (appState) => () => {
-  appState.raster.fitBounds(paper.view.bounds, true);
+paper.view.onResize = () => {
   paper.project.activeLayer.position = paper.view.center;
+  crystalise(appState);
 };
-paper.view.onResize = onResize(appState);
 
 function onDocumentDrag(event) {
   event.preventDefault();
