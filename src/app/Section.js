@@ -15,7 +15,7 @@ const midpoint = (p1, p2) => {
   const xdiff = p2.x - p1.x;
   const ydiff = p2.y - p1.y;
   //const r = gaussianRand();
-  const r = 0.3;
+  const r = 0.5;
 
   return new paper.Point(p1.x + (xdiff * r), p1.y + (ydiff * r));
 };
