@@ -7,6 +7,10 @@ import './images/squid.jpg';
 
 import _ from 'underscore';
 
+_.mixin({
+  flatMap: (value, f) => _.flatten(_.map(value, f), true)
+});
+
 import * as Grid from './app/Grid';
 import * as Section from './app/Section';
 
@@ -17,7 +21,7 @@ const appState = {
   raster: null,
   grid: null,
   sections: null,
-  triangleSize: 60
+  triangleSize: 400
 };
 
 function handleImage(appState, image) {
@@ -37,8 +41,11 @@ function handleImage(appState, image) {
       gridXCells,
       gridYCells
     );
-    appState.sections = Grid.sections(appState.grid);
-    appState.sections = _.flatten(_.map(Grid.sections(appState.grid), Section.subdivide));
+    appState.sections = _.chain(Grid.sections(appState.grid))
+      .flatMap(Section.subdivide)
+      .flatMap(Section.subdivide)
+      .flatMap(Section.subdivide)
+      .flatMap(Section.subdivide);
 
     const tris = new paper.Group();
     _.chain(appState.sections).map(Section.path).each((s) => {
