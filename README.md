@@ -1,11 +1,11 @@
-# Grids Experiment
+# Glassify
 
-Playing with grids
+Create stained glass-esque images.
 
 
 ## Description
 
-
+Drop an image in, mess around with the controls.
 
 
 ## Contact
