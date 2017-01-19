@@ -63,10 +63,9 @@ function handleImage(appState, image) {
   });
 }
 
-paper.view.onResize = () => {
-  paper.project.activeLayer.position = paper.view.center;
+paper.view.onResize = _.debounce(() => {
   crystalise(appState);
-};
+}, 200);
 
 function onDocumentDrag(event) {
   event.preventDefault();
