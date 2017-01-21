@@ -53,18 +53,14 @@ const appState = {
 const controlProps = {
   decreaseLevels: () => {
     controlState.levels -= 1;
-    if (controlState.levels <= 0) controlState.levels = 1;
     renderControls();
   },
   increaseLevels: () => {
     controlState.levels += 1;
-    if (controlState.levels > 20) controlState.levels = 20;
     renderControls();
   },
   changeSize: (e) => {
     controlState.triangleSize = e.target.value;
-    if (controlState.triangleSize > 1000) controlState.triangleSize = 1000;
-    if (controlState.triangleSize < 50) controlState.triangleSize = 50;
     renderControls();
   },
   changeRandomise: () => {
@@ -73,18 +69,30 @@ const controlProps = {
   },
   changeTwist: (e) => {
     controlState.twist = e.target.value;
-    if (controlState.twist > 1) controlState.twist = 1;
-    if (controlState.twist < 0) controlState.twist = 0;
     renderControls();
   },
   rerender: () => {
+    checkLimits();
+    updateAppState();
     renderControls();
-    appState.triangleSize = controlState.triangleSize;
-    appState.levels = controlState.levels;
-    appState.randomise = controlState.randomise;
-    appState.twist = controlState.twist;
     crystalise(appState);
   }
+};
+
+const updateAppState = () => {
+  appState.triangleSize = controlState.triangleSize;
+  appState.levels = controlState.levels;
+  appState.randomise = controlState.randomise;
+  appState.twist = controlState.twist;
+};
+
+const checkLimits = () => {
+  if (controlState.levels <= 0) controlState.levels = 1;
+  if (controlState.levels > 20) controlState.levels = 20;
+  if (controlState.twist > 1) controlState.twist = 1;
+  if (controlState.twist < 0) controlState.twist = 0;
+  if (controlState.triangleSize > 1000) controlState.triangleSize = 1000;
+  if (controlState.triangleSize < 50) controlState.triangleSize = 50;
 };
 
 const renderControls = () => {

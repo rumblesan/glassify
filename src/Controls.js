@@ -9,10 +9,11 @@ export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, level
       </span>
 
       <span className='control-item'>
-        Initial Size: <input value={triangleSize} onChange={(e) => changeSize(e)}/>
+        Grid: <input value={triangleSize} onChange={(e) => changeSize(e)}/>
       </span>
 
       <span className='control-item'>
+        Divisions:
         <button onClick={decreaseLevels}>-</button>
         <span className='numeric-text'>
           {levels}
@@ -21,18 +22,18 @@ export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, level
       </span>
 
       <span className='control-item'>
-        <input type="checkbox" value={randomise} onClick={changeRandomise}/>
+        Rand: <input type="checkbox" value={randomise} onClick={changeRandomise}/>
       </span>
 
       <span className='control-item'>
-        Twist (0 - 1): <input value={twist} onChange={(e) => changeTwist(e)}/>
+        Twist: <input value={twist} onChange={(e) => changeTwist(e)} disabled={randomise}/>
       </span>
       <span className='control-item'>
         <button onClick={rerender}>Re-Render</button>
       </span>
 
       <span className='control-item'>
-        Drag and drop an image to change
+        Drag and drop images
       </span>
 
     </div>

@@ -38,3 +38,6 @@ a:link, a:visited, a:hover, a:active {
 .control-item.interactive {
     cursor: pointer;
 }
+input[disabled] {
+    background: #bbbbbb;
+}
