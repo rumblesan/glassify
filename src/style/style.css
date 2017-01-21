@@ -11,6 +11,30 @@ canvas {
     height:100%;
 }
 
-.hidden {
-    display: none;
+navbar {
+    position: absolute;
+    height: 40;
+    background-color: white;
+    z-index: 3;
+}
+#header {
+    width: 100%;
+    height: auto;
+    background-color: #000000;
+    color: #ffffff;
+    position: absolute;
+    z-index: 5;
+}
+a:link, a:visited, a:hover, a:active {
+    color: white;
+}
+#controls {
+    font-family: monospace; line-height: 1.4em;
+    font-size: 1.2em;
+}
+.control-item {
+    padding: 5px 10px;
+}
+.control-item.interactive {
+    cursor: pointer;
 }

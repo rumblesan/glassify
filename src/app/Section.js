@@ -11,21 +11,25 @@ export const create = (points) => {
   };
 };
 
-const midpoint = (p1, p2) => {
+const midpoint = (p1, p2, randomise, twist) => {
   const xdiff = p2.x - p1.x;
   const ydiff = p2.y - p1.y;
-  const r = gaussianRand();
-  //const r = 0.5;
+  let r;
+  if (randomise) {
+    r = gaussianRand();
+  } else {
+    r = twist;
+  }
 
   return new paper.Point(p1.x + (xdiff * r), p1.y + (ydiff * r));
 };
 
-export const subdivide = (section) => {
+export const subdivide = (section, randomise, twist) => {
   const [p1, p2, p3] = section.points;
 
-  const p12 = midpoint(p1, p2);
-  const p23 = midpoint(p2, p3);
-  const p31 = midpoint(p3, p1);
+  const p12 = midpoint(p1, p2, randomise, twist);
+  const p23 = midpoint(p2, p3, randomise, twist);
+  const p31 = midpoint(p3, p1, randomise, twist);
 
   return [
     create([p1, p12, p31]),

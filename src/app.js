@@ -1,14 +1,30 @@
 /* global paper */
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import _ from 'underscore';
+
+import Controls from './Controls';
+
 import './index.html';
 import './style/style.css';
 import './images/favicon.ico';
 import './images/squid.jpg';
 
-import _ from 'underscore';
 
 _.mixin({
   flatMap: (value, f) => _.flatten(_.map(value, f), true)
+});
+
+_.mixin({
+  replicate: (value, f, times) => {
+    let v = value;
+    for (let i = 0; i < times; i += 1) {
+      v = _.flatMap(v, f);
+    }
+    return v;
+  }
 });
 
 import * as Grid from './app/Grid';
@@ -17,11 +33,65 @@ import * as Section from './app/Section';
 const canvas = document.getElementById('triangles');
 paper.setup(canvas);
 
+const controlState = {
+  triangleSize: 400,
+  levels: 5,
+  randomise: false,
+  twist: 0.5
+};
+
 const appState = {
   raster: null,
   grid: null,
   sections: null,
-  triangleSize: 400
+  triangleSize: 400,
+  levels: 5,
+  randomise: false,
+  twist: 0.5
+};
+
+const controlProps = {
+  decreaseLevels: () => {
+    controlState.levels -= 1;
+    if (controlState.levels <= 0) controlState.levels = 1;
+    renderControls();
+  },
+  increaseLevels: () => {
+    controlState.levels += 1;
+    if (controlState.levels > 20) controlState.levels = 20;
+    renderControls();
+  },
+  changeSize: (e) => {
+    controlState.triangleSize = e.target.value;
+    if (controlState.triangleSize > 1000) controlState.triangleSize = 1000;
+    if (controlState.triangleSize < 50) controlState.triangleSize = 50;
+    renderControls();
+  },
+  changeRandomise: () => {
+    controlState.randomise = !controlState.randomise;
+    renderControls();
+  },
+  changeTwist: (e) => {
+    controlState.twist = e.target.value;
+    if (controlState.twist > 1) controlState.twist = 1;
+    if (controlState.twist < 0) controlState.twist = 0;
+    renderControls();
+  },
+  rerender: () => {
+    renderControls();
+    appState.triangleSize = controlState.triangleSize;
+    appState.levels = controlState.levels;
+    appState.randomise = controlState.randomise;
+    appState.twist = controlState.twist;
+    crystalise(appState);
+  }
+};
+
+const renderControls = () => {
+  ReactDOM.render(
+    <Controls {...controlProps} {...controlState}/>,
+    document.getElementById('header')
+  );
 };
 
 const crystalise = (appState) => {
@@ -37,10 +107,10 @@ const crystalise = (appState) => {
     gridYCells
   );
   appState.sections = _.chain(Grid.sections(appState.grid))
-    .flatMap(Section.subdivide)
-    .flatMap(Section.subdivide)
-    .flatMap(Section.subdivide)
-    .flatMap(Section.subdivide);
+    .replicate(
+      (s) => Section.subdivide(s, appState.randomise, appState.twist),
+      appState.levels
+    );
 
   const tris = new paper.Group();
   _.chain(appState.sections).map(Section.path).each((s) => {
@@ -93,3 +163,5 @@ document.addEventListener('dragover', onDocumentDrag, false);
 document.addEventListener('dragleave', onDocumentDrag, false);
 
 handleImage(appState, 'squid');
+
+renderControls();
