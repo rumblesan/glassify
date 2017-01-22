@@ -35,9 +35,9 @@ paper.setup(canvas);
 
 const controlState = {
   triangleSize: 400,
-  levels: 5,
+  levels: 3,
   randomise: false,
-  twist: 0.5
+  twist: 0.6
 };
 
 const appState = {
@@ -48,6 +48,13 @@ const appState = {
   levels: 5,
   randomise: false,
   twist: 0.5
+};
+
+const render = () => {
+  checkLimits();
+  updateAppState();
+  renderControls();
+  crystalise(appState);
 };
 
 const controlProps = {
@@ -71,12 +78,7 @@ const controlProps = {
     controlState.twist = e.target.value;
     renderControls();
   },
-  rerender: () => {
-    checkLimits();
-    updateAppState();
-    renderControls();
-    crystalise(appState);
-  }
+  rerender: render
 };
 
 const updateAppState = () => {
@@ -137,12 +139,12 @@ function handleImage(appState, image) {
   appState.raster.visible = false;
 
   appState.raster.on('load', function() {
-    crystalise(appState);
+    render(appState);
   });
 }
 
 paper.view.onResize = _.debounce(() => {
-  crystalise(appState);
+  render(appState);
 }, 200);
 
 function onDocumentDrag(event) {
