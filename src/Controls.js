@@ -9,25 +9,30 @@ export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, level
       </span>
 
       <span className='control-item'>
-        Grid: <input value={triangleSize} onChange={(e) => changeSize(e)}/>
+        Grid: <input title='Initial grid size' value={triangleSize} onChange={(e) => changeSize(e)}/>
       </span>
 
       <span className='control-item'>
         Divisions:
-        <button onClick={decreaseLevels}>-</button>
+        <button title='Increase subdivisions' onClick={decreaseLevels}>-</button>
         <span className='numeric-text'>
           {levels}
         </span>
-        <button onClick={increaseLevels}>+</button>
+        <button title='Decrease subdivisions' onClick={increaseLevels}>+</button>
       </span>
 
       <span className='control-item'>
-        Rand: <input type="checkbox" value={randomise} onClick={changeRandomise}/>
+        Rand: <input title='Randomise subdivisions' type="checkbox" value={randomise} onClick={changeRandomise}/>
       </span>
 
       <span className='control-item'>
-        Twist: <input value={twist} onChange={(e) => changeTwist(e)} disabled={randomise}/>
+        Twist: <input title='How much to twist sub division triangles' value={twist} onChange={(e) => changeTwist(e)} disabled={randomise}/>
       </span>
+
+      <span className='control-item'>
+        <button title='Rerender with new settings' onClick={rerender}>Re-Render</button>
+      </span>
+
       <span className='control-item'>
         <button title='Right click and then save as' onClick={download}>Download</button>
       </span>
