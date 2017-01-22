@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, levels, randomise, changeRandomise, twist, changeTwist, rerender}) => {
+export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, levels, randomise, changeRandomise, twist, changeTwist, rerender, download}) => {
   return (
     <div id='controls'>
       <span className='control-item interactive'>
@@ -29,7 +29,7 @@ export default ({triangleSize, changeSize, decreaseLevels, increaseLevels, level
         Twist: <input value={twist} onChange={(e) => changeTwist(e)} disabled={randomise}/>
       </span>
       <span className='control-item'>
-        <button onClick={rerender}>Re-Render</button>
+        <button title='Right click and then save as' onClick={download}>Download</button>
       </span>
 
       <span className='control-item'>

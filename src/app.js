@@ -78,7 +78,12 @@ const controlProps = {
     controlState.twist = e.target.value;
     renderControls();
   },
-  rerender: render
+  rerender: render,
+  download: () => {
+    render();
+    const img = canvas.toDataURL('image/png');
+    document.write(`<img src='${img}'>`);
+  }
 };
 
 const updateAppState = () => {
