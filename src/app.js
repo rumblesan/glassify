@@ -53,30 +53,30 @@ const appState = {
 const render = () => {
   checkLimits();
   updateAppState();
-  renderControls();
+  renderUI();
   crystalise(appState);
 };
 
 const controlProps = {
   decreaseLevels: () => {
     controlState.levels -= 1;
-    renderControls();
+    renderUI();
   },
   increaseLevels: () => {
     controlState.levels += 1;
-    renderControls();
+    renderUI();
   },
   changeSize: (e) => {
     controlState.triangleSize = e.target.value;
-    renderControls();
+    renderUI();
   },
   changeRandomise: () => {
     controlState.randomise = !controlState.randomise;
-    renderControls();
+    renderUI();
   },
   changeTwist: (e) => {
     controlState.twist = e.target.value;
-    renderControls();
+    renderUI();
   },
   rerender: render,
   download: () => {
@@ -102,7 +102,7 @@ const checkLimits = () => {
   if (controlState.triangleSize < 50) controlState.triangleSize = 50;
 };
 
-const renderControls = () => {
+const renderUI = () => {
   ReactDOM.render(
     <Controls {...controlProps} {...controlState}/>,
     document.getElementById('header')
@@ -179,4 +179,4 @@ document.addEventListener('dragleave', onDocumentDrag, false);
 
 handleImage(appState, 'squid');
 
-renderControls();
+renderUI();
